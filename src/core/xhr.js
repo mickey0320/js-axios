@@ -4,7 +4,15 @@ import createError from "../helper/error"
 // 参数config可以理解为在调用axios的时候传递的那个对象
 export default function xhr(config) {
   return new Promise((resolve, reject) => {
-    const { url, method = "get", data, headers, responseType, timeout } = config
+    const {
+      url,
+      method = "get",
+      data,
+      headers,
+      responseType,
+      timeout,
+      cancelToken
+    } = config
     const request = new XMLHttpRequest()
 
     if (responseType) {
@@ -13,6 +21,13 @@ export default function xhr(config) {
 
     if (timeout) {
       request.timeout = timeout
+    }
+
+    if (cancelToken) {
+      cancelToken.promise.then(() => {
+        request.abort()
+        reject(cancelToken.reason)
+      })
     }
 
     request.open(method, url, true)

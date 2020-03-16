@@ -1,4 +1,6 @@
 import Axios from "./core/axios"
+import CancelToken from "./cancel/CancelToken"
+import { isCancel } from "./cancel/Cancel"
 
 function extend(instance, axios) {
   // 原型上的方法
@@ -23,5 +25,7 @@ function createInstance() {
   return instance
 }
 const axios = createInstance()
+axios.CancelToken = CancelToken
+axios.isCancel = isCancel
 
 export default axios

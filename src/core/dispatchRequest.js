@@ -12,7 +12,14 @@ function processConfig(config) {
   config.data = transformRequest(data)
 }
 
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
+}
+
 export default function dispatchRequest(config) {
+  throwIfCancellationRequested(config)
   processConfig(config)
   return xhr(config).then(res => {
     // json字符串转为json对象
