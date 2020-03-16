@@ -1,9 +1,34 @@
 import dispatchRequest from "./dispatchRequest"
+import IneterceptorManager from "./InterceptorManager"
 
 export default class Axios {
-  constructor() {}
+  interceptors = []
+  constructor() {
+    this.interceptors = {
+      request: new IneterceptorManager(),
+      response: new IneterceptorManager()
+    }
+  }
   request(config) {
-    return dispatchRequest(config)
+    const promiseChain = [
+      {
+        resolve: dispatchRequest,
+        reject: undefined
+      }
+    ]
+    this.interceptors.request.forEach(interceptor => {
+      promiseChain.unshift(interceptor)
+    })
+    this.interceptors.response.forEach(interceptor => {
+      promiseChain.push(interceptor)
+    })
+    let promise = Promise.resolve(config)
+    while (promiseChain.length) {
+      const { resolve, reject } = promiseChain.shift()
+      promise = promise.then(resolve, reject)
+    }
+
+    return promise
   }
   get(url, config) {
     return this._requestWithoutData(url, "get", config)

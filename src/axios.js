@@ -1,9 +1,14 @@
 import Axios from "./core/axios"
 
 function extend(instance, axios) {
+  // 原型上的方法
   const methods = Object.getOwnPropertyNames(Axios.prototype).filter(
     method => method !== "constructor"
   )
+  // 实例属性
+  Object.keys(axios).forEach(prop => {
+    instance[prop] = axios[prop]
+  })
   methods.forEach(method => {
     instance[method] = axios[method]
   })
