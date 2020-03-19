@@ -1,6 +1,7 @@
 import Axios from "./core/axios"
 import CancelToken from "./cancel/CancelToken"
 import { isCancel } from "./cancel/Cancel"
+import defaults from "./defaults"
 
 function extend(instance, axios) {
   // 原型上的方法
@@ -16,15 +17,15 @@ function extend(instance, axios) {
   })
 }
 
-function createInstance() {
-  const axios = new Axios()
+function createInstance(defaults) {
+  const axios = new Axios(defaults)
   // instance是一个方法
   const instance = axios.request.bind(axios)
   // 把axios实例下的所有方法拷贝到instance上
   extend(instance, axios)
   return instance
 }
-const axios = createInstance()
+const axios = createInstance(defaults)
 axios.CancelToken = CancelToken
 axios.isCancel = isCancel
 

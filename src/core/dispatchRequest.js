@@ -1,13 +1,14 @@
 import xhr from "./xhr"
-import { processHeaders } from "../helper/headers"
+import { processHeaders, flattenHeaders } from "../helper/headers"
 import handleURL from "../helper/url"
 import { transformRequest, transformResponse } from "../helper/data"
 
 function processConfig(config) {
-  const { url, params, headers = {}, data } = config
+  const { url, method, params, headers = {}, data } = config
   config.url = handleURL(url, params)
   // 处理headers
-  config.headers = processHeaders(headers, data)
+  config.headers = flattenHeaders(headers, method)
+  config.headers = processHeaders(config.headers, data)
   // 处理data
   config.data = transformRequest(data)
 }

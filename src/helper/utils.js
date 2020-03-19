@@ -8,9 +8,27 @@ export function isDate(val) {
 }
 export function extend(target, source) {
   for (let key in source) {
-    debugger
     target[key] = source[key]
   }
 
   return target
+}
+
+export function deepMerge(...configs) {
+  const newConfig = {}
+  configs.forEach(config => {
+    Object.keys(config).forEach(key => {
+      if (isPlainObject(config[key])) {
+        if (newConfig[key]) {
+          newConfig[key] = deepMerge(newConfig[key], config[key])
+        } else {
+          newConfig[key] = deepMerge(config[key])
+        }
+      } else {
+        newConfig[key] = config[key]
+      }
+    })
+  })
+
+  return newConfig
 }

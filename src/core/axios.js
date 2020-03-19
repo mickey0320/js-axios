@@ -1,15 +1,19 @@
 import dispatchRequest from "./dispatchRequest"
 import IneterceptorManager from "./InterceptorManager"
+import mergeConfig from "./mergeConfig"
 
 export default class Axios {
   interceptors = []
-  constructor() {
+  defaults
+  constructor(defaults) {
+    this.defaults = defaults
     this.interceptors = {
       request: new IneterceptorManager(),
       response: new IneterceptorManager()
     }
   }
   request(config) {
+    config = mergeConfig(this.defaults, config)
     const promiseChain = [
       {
         resolve: dispatchRequest,

@@ -1,3 +1,5 @@
+import { deepMerge } from "./utils"
+
 function normalizeHeaders(headers, normalizeHeaderName) {
   Object.keys(headers).forEach(headerName => {
     if (
@@ -30,4 +32,24 @@ export function parseResponseHeaders(headers) {
   })
 
   return parsed
+}
+
+export function flattenHeaders(headers, method) {
+  if (!headers) return headers
+  headers = deepMerge(headers.common, headers[method], headers)
+  const deleteMethods = [
+    "delete",
+    "get",
+    "head",
+    "options",
+    "post",
+    "put",
+    "patch",
+    "common"
+  ]
+  deleteMethods.forEach(action => {
+    delete headers[action]
+  })
+
+  return headers
 }

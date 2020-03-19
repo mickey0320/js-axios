@@ -181,7 +181,7 @@ import axios from "./src/index"
 //   console.log(res.data)
 // })
 
-const CancelToken = axios.CancelToken
+// const CancelToken = axios.CancelToken
 // const source = CancelToken.source()
 // axios
 //   .get("http://localhost:8080/cancel/get", {
@@ -208,20 +208,52 @@ const CancelToken = axios.CancelToken
 //     })
 // }, 100)
 
-let cancel
+// let cancel
 
-axios
-  .get("http://localhost:8080/cancel/get", {
-    cancelToken: new CancelToken(c => {
-      cancel = c
-    })
-  })
-  .catch(function(e) {
-    if (axios.isCancel(e)) {
-      console.log("Request canceled")
-    }
-  })
+// axios
+//   .get("http://localhost:8080/cancel/get", {
+//     cancelToken: new CancelToken(c => {
+//       cancel = c
+//     })
+//   })
+//   .catch(function(e) {
+//     if (axios.isCancel(e)) {
+//       console.log("Request canceled")
+//     }
+//   })
 
-setTimeout(() => {
-  cancel()
-}, 200)
+// setTimeout(() => {
+//   cancel()
+// }, 200)
+
+axios.defaults.headers.common["test2"] = 123
+
+axios({
+  url: "http://localhost:8080/config/post",
+  method: "post",
+  data: "a=1&b=2",
+  headers: {
+    test: "321"
+  }
+}).then(res => {
+  console.log(res.data)
+})
+
+// axios({
+//   transformRequest: [(function(data) {
+//     return qs.stringify(data)
+//   }), ...(axios.defaults.transformRequest as AxiosTransformer[])],
+//   transformResponse: [...(axios.defaults.transformResponse as AxiosTransformer[]), function(data) {
+//     if (typeof data === 'object') {
+//       data.b = 2
+//     }
+//     return data
+//   }],
+//   url: '/config/post',
+//   method: 'post',
+//   data: {
+//     a: 1
+//   }
+// }).then((res) => {
+//   console.log(res.data)
+// })
