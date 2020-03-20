@@ -226,15 +226,28 @@ import axios from "./src/index"
 //   cancel()
 // }, 200)
 
-axios.defaults.headers.common["test2"] = 123
+// axios.defaults.headers.common["test2"] = 123
 
-axios({
-  url: "http://localhost:8080/config/post",
-  method: "post",
-  data: "a=1&b=2",
+// axios({
+//   url: "http://localhost:8080/config/post",
+//   method: "post",
+//   data: "a=1&b=2",
+//   headers: {
+//     test: "321"
+//   }
+// }).then(res => {
+//   console.log(res.data)
+// })
+
+const newAxios = axios.create({
   headers: {
-    test: "321"
-  }
+    test: "test"
+  },
+  method: "post"
+})
+newAxios({
+  url: "http://localhost:8080/config/post",
+  data: "a=1&b=2"
 }).then(res => {
   console.log(res.data)
 })
