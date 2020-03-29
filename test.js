@@ -240,16 +240,16 @@ import axios from "./src/index"
 // })
 
 const newAxios = axios.create({
-  headers: {
-    test: "test"
-  },
-  method: "post"
+    headers: {
+        test: "test"
+    },
+    method: "post"
 })
 newAxios({
-  url: "http://localhost:8080/config/post",
-  data: "a=1&b=2"
+    url: "http://localhost:8080/config/post",
+    data: "a=1&b=2"
 }).then(res => {
-  console.log(res.data)
+    console.log(res.data)
 })
 
 // axios({
